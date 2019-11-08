@@ -1,6 +1,6 @@
 ﻿namespace Taixevaxe
 {
-    partial class Form3
+    partial class ThongTinXe
     {
         /// <summary>
         /// Required designer variable.

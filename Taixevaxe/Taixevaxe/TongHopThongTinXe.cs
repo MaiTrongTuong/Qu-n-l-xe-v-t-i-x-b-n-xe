@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Taixevaxe
 {
-    public partial class Form3 : Form
+    public partial class TongHopThongTinXe : Form
     {
-        public Form3()
+        public TongHopThongTinXe()
         {
             InitializeComponent();
         }

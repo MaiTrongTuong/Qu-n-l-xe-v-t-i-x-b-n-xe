@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Taixevaxe
 {
-    public partial class Form2 : Form
+    public partial class DanhSachCapLenh : Form
     {
-        public Form2()
+        public DanhSachCapLenh()
         {
             InitializeComponent();
         }

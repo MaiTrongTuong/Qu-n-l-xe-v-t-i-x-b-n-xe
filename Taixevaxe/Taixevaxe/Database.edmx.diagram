@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="51cd684b373c42b58e4155f445a9484a" Name="Diagram1">
+        <EntityTypeShape EntityType="QuanLyBenXeModel.ChatLuong" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.ChucVu" Width="1.5" PointX="3" PointY="16.375" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.ChuXe" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.HoaDon" Width="1.5" PointX="7.5" PointY="5.625" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.LenhXuatBen" Width="1.5" PointX="0.75" PointY="3.125" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.Luong" Width="1.5" PointX="3" PointY="11.75" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.NhanVien" Width="1.5" PointX="5.25" PointY="13.125" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.PhieuDangTai" Width="1.5" PointX="5.25" PointY="2.125" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.PhongBan" Width="1.5" PointX="3" PointY="14" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.sysdiagram" Width="1.5" PointX="7.75" PointY="1.25" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.TuyenDuong" Width="1.5" PointX="3" PointY="7.125" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.Ve" Width="1.5" PointX="5.25" PointY="5.75" />
+        <EntityTypeShape EntityType="QuanLyBenXeModel.XE" Width="1.5" PointX="3" PointY="2.375" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__XE__ChatLuong__403A8C7D" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__NhanVien__ChucVu__5070F446" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__XE__ChuXe__3F466844" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__HoaDon__MaSoVe__5629CD9C" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__HoaDon__NgXuatHD__5535A963" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__XE__MaXe__412EB0B6" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__NhanVien__TienLu__52593CB8" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__NhanVien__Phong__5165187F" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__PhieuDang__MaTuy__46E78A0C" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__PhieuDangT__MaXe__47DBAE45" />
+        <AssociationConnector Association="QuanLyBenXeModel.FK__Ve__MaXe__440B1D61" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

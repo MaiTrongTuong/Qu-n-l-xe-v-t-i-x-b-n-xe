@@ -57,16 +57,23 @@ namespace QuanLyBenXe.DataBase
             return dt;
         }
 
-        public SqlCommand add_hocsinh(string Mahocsinh, string tenhocsinh, string Malop, DateTime ngaysinh, string gioitinh, double sdt)
+        public SqlCommand add_NhanVien(string MaNV, string HoTen, string NgaySinh, string GioiTinh, string Cmt,string QueQuan,double Sdt, string MatKhau, string ChucVu, string TienLuong, string Phong, DateTime Lancuoicapnhat, string NguoiCapNhat)
         {
             open();
-            cmd = new SqlCommand("add_hocsinh", con);
-            cmd.Parameters.Add(new SqlParameter("@mahocsinh", Mahocsinh));
-            cmd.Parameters.Add(new SqlParameter("@tenhocsinh", tenhocsinh));
-            cmd.Parameters.Add(new SqlParameter("@malop", Malop));
-            cmd.Parameters.Add(new SqlParameter("@ngaysinh", ngaysinh));
-            cmd.Parameters.Add(new SqlParameter("@gioitinh", gioitinh));
-            cmd.Parameters.Add(new SqlParameter("@sdt", sdt));
+            cmd = new SqlCommand("add_QuanLyNhanVien", con);
+            cmd.Parameters.Add(new SqlParameter("@manhanvien", MaNV));
+            cmd.Parameters.Add(new SqlParameter("@hoten", HoTen));
+            cmd.Parameters.Add(new SqlParameter("@ngaysinh", NgaySinh));
+            cmd.Parameters.Add(new SqlParameter("@gioitinh", GioiTinh));
+            cmd.Parameters.Add(new SqlParameter("@cmt", Cmt));
+            cmd.Parameters.Add(new SqlParameter("@quequan", QueQuan));
+            cmd.Parameters.Add(new SqlParameter("@sdt", Sdt));
+            cmd.Parameters.Add(new SqlParameter("@matkhau", MatKhau));
+            cmd.Parameters.Add(new SqlParameter("@chucvu", ChucVu));
+            cmd.Parameters.Add(new SqlParameter("@tienluong", TienLuong));
+            cmd.Parameters.Add(new SqlParameter("@phong", Phong));
+            cmd.Parameters.Add(new SqlParameter("@lancuoicapnhat", Lancuoicapnhat));
+            cmd.Parameters.Add(new SqlParameter("@nguoicapnhat", NguoiCapNhat));
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.ExecuteNonQuery();
             close();

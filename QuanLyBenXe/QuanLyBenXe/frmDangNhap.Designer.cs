@@ -31,14 +31,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtTenDangNhap = new System.Windows.Forms.TextBox();
             this.rdbNhanVien = new System.Windows.Forms.RadioButton();
-            this.btnDangNhap = new System.Windows.Forms.Button();
-            this.rdbQuanLy = new System.Windows.Forms.RadioButton();
+            this.cbShowPassword = new System.Windows.Forms.Button();
             this.rdbChuXe = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtMatKhau = new System.Windows.Forms.TextBox();
             this.btnThoat = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -64,36 +64,26 @@
             this.rdbNhanVien.Checked = true;
             this.rdbNhanVien.Location = new System.Drawing.Point(44, 41);
             this.rdbNhanVien.Name = "rdbNhanVien";
-            this.rdbNhanVien.Size = new System.Drawing.Size(75, 17);
+            this.rdbNhanVien.Size = new System.Drawing.Size(113, 17);
             this.rdbNhanVien.TabIndex = 2;
             this.rdbNhanVien.TabStop = true;
-            this.rdbNhanVien.Text = "Nhân Viên";
+            this.rdbNhanVien.Text = "Nhân Viên Bến Xe";
             this.rdbNhanVien.UseVisualStyleBackColor = true;
             // 
-            // btnDangNhap
+            // cbShowPassword
             // 
-            this.btnDangNhap.Location = new System.Drawing.Point(188, 202);
-            this.btnDangNhap.Name = "btnDangNhap";
-            this.btnDangNhap.Size = new System.Drawing.Size(75, 23);
-            this.btnDangNhap.TabIndex = 3;
-            this.btnDangNhap.Text = "Đăng Nhập";
-            this.btnDangNhap.UseVisualStyleBackColor = true;
-            this.btnDangNhap.Click += new System.EventHandler(this.btnDangNhap_Click);
-            // 
-            // rdbQuanLy
-            // 
-            this.rdbQuanLy.AutoSize = true;
-            this.rdbQuanLy.Location = new System.Drawing.Point(161, 41);
-            this.rdbQuanLy.Name = "rdbQuanLy";
-            this.rdbQuanLy.Size = new System.Drawing.Size(65, 17);
-            this.rdbQuanLy.TabIndex = 4;
-            this.rdbQuanLy.Text = "Quản Lý";
-            this.rdbQuanLy.UseVisualStyleBackColor = true;
+            this.cbShowPassword.Location = new System.Drawing.Point(188, 202);
+            this.cbShowPassword.Name = "cbShowPassword";
+            this.cbShowPassword.Size = new System.Drawing.Size(75, 23);
+            this.cbShowPassword.TabIndex = 3;
+            this.cbShowPassword.Text = "Đăng Nhập";
+            this.cbShowPassword.UseVisualStyleBackColor = true;
+            this.cbShowPassword.Click += new System.EventHandler(this.btnDangNhap_Click);
             // 
             // rdbChuXe
             // 
             this.rdbChuXe.AutoSize = true;
-            this.rdbChuXe.Location = new System.Drawing.Point(269, 41);
+            this.rdbChuXe.Location = new System.Drawing.Point(203, 41);
             this.rdbChuXe.Name = "rdbChuXe";
             this.rdbChuXe.Size = new System.Drawing.Size(60, 17);
             this.rdbChuXe.TabIndex = 5;
@@ -149,19 +139,30 @@
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(269, 158);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(62, 17);
+            this.checkBox1.TabIndex = 10;
+            this.checkBox1.Text = "Hiển thị";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckStateChanged += new System.EventHandler(this.checkBox1_CheckStateChanged);
+            // 
             // frmDangNhap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 237);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.btnThoat);
             this.Controls.Add(this.txtMatKhau);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.rdbChuXe);
-            this.Controls.Add(this.rdbQuanLy);
-            this.Controls.Add(this.btnDangNhap);
+            this.Controls.Add(this.cbShowPassword);
             this.Controls.Add(this.rdbNhanVien);
             this.Controls.Add(this.txtTenDangNhap);
             this.Controls.Add(this.label1);
@@ -179,14 +180,14 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtTenDangNhap;
         private System.Windows.Forms.RadioButton rdbNhanVien;
-        private System.Windows.Forms.Button btnDangNhap;
-        private System.Windows.Forms.RadioButton rdbQuanLy;
+        private System.Windows.Forms.Button cbShowPassword;
         private System.Windows.Forms.RadioButton rdbChuXe;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtMatKhau;
         private System.Windows.Forms.Button btnThoat;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

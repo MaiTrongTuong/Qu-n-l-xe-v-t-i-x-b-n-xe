@@ -51,7 +51,7 @@ namespace QuanLyBenXe
                 if(dt.Rows.Count>0)
                 {
                     DR = dt.Rows[0];
-                    if(DR["ChucVu"].ToString().Substring(0,2)=="QL")
+                    if(DR["ChucVu"].ToString().Substring(0,4)=="QLNS")
                     {
                         MainQuanLy quanly = new MainQuanLy();
                         this.Hide();
@@ -112,6 +112,18 @@ namespace QuanLyBenXe
         private void frmDangNhap_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckStateChanged(object sender, EventArgs e)
+        {
+            if(checkBox1.Checked==true)
+            {
+                txtMatKhau.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                txtMatKhau.UseSystemPasswordChar = true;
+            }
         }
     }
 }

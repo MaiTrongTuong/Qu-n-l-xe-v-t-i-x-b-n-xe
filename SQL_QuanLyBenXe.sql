@@ -1,7 +1,8 @@
-﻿USE master
+﻿use master;
 GO
 IF DB_ID('QuanlyBenXe') IS NOT NULL
-	DROP DATABASE QuanLyBenXe
+	DROP DATABASE QuanLyBenXe;
+GO
 CREATE DATABASE QuanLyBenXe
 GO 
 USE QuanLyBenXe
@@ -103,12 +104,16 @@ CREATE TABLE NhanVien
 	MaNhanVien    nvarchar(50) NOT NULL,
 	HoTen         nvarchar(50) NOT NULL,
 	NgaySinh       Date NOT NULL,
+	GioiTinh	bit  null,
+	CMT nvarchar(20)  null,
     QueQuan        nvarchar(50) NOT NULL,
-	DienThoai     nvarchar(50)NOT NULL,
+	DienThoai     numeric(12) not null,
     MatKhau    nvarchar(50) NOT NULL,
 	ChucVu      nvarchar(50) NOT NULL,
-	TienLuong   nvarchar(50) NOT NULL,
+	TienLuong   nvarchar(50)  NULL,
 	Phong         nvarchar(50) NOT NULL,
+	LanCuoiCapNhat datetime null,
+	NguoiCapNhat nvarchar(50) null
 	primary key (MaNhanVien),
 	Foreign key(ChucVu) references ChucVu(MaChucVu),
 	Foreign key(Phong) references PhongBan(MaPhongBan),
@@ -139,8 +144,8 @@ VALUES
 GO
 INSERT INTO TuyenDuong(MaTuyen,NoiXuatPhat,DiemDen,KhoangCach)
 VALUES
-('MT01','TPHCM',N'Nha Trang','600'),
-('MT02','TPHCM',N'Bình Thuận','219');
+('MT01',N'TPHCM',N'Nha Trang','600'),
+('MT02',N'TPHCM',N'Bình Thuận','219');
 GO
 INSERT INTO LenhXuatBen(Malxb,TrangThai,GioRa,GioVao)
 VALUES
@@ -165,22 +170,27 @@ GO
 INSERT INTO ChucVu(MaChucVu,ChucVu)
 VALUES
 ('TN01',N'Thu Ngân'),
-('BV01',N'Bảo Vệ');
+('BV01',N'Bảo Vệ'),
+('QLNS',N'Quản Lý Nhân Sự'),
+('QLTC',N'Quản Lí Tài Chính Và Đồng');
 GO
 INSERT INTO Luong(MaLuong,MucLuong)
 VALUES
 ('ML02','12000000'),
-('ML01','9000000');
+('ML01','9000000'),
+('ML03','16000000');
 GO
 INSERT INTO PhongBan(MaPhongBan,TenPhongBan)
 VALUES
-('PB101','Phòng Bán Vé'),
-('PB102','Phòng Bảo Vệ');
+('PB101',N'Phòng Bán Vé'),
+('PB102',N'Phòng Bảo Vệ'),
+('PBQL',N'Phòng Quản Lý');
 GO
-INSERT INTO NhanVien(MaNhanVien,HoTen,NgaySinh,QueQuan,DienThoai,MatKhau,ChucVu,TienLuong,Phong)
+INSERT INTO NhanVien(MaNhanVien,HoTen,NgaySinh,GioiTinh,CMT,QueQuan,DienThoai,MatKhau,ChucVu,TienLuong,Phong,LanCuoiCapNhat,NguoiCapNhat)
 VALUES
-('NV02',N'Hoàng Minh Ngân','10/10/1999',N'Đồng Nai','098132455','1234','TN01','ML02','PB101'),
-('NV01',N'Hoàng Minh Tuấn','10/10/1997',N'Đồng Nai','098132845','1234','BV01','ML01','PB102');
+('NV02',N'Hoàng Minh Ngân','10/10/1999','True','1113244422',N'Đồng Nai','098132455','1234','TN01','ML02','PB101','',''),
+('NV01',N'Hoàng Minh Tuấn','10/10/1997','False','65445151555',N'Đồng Nai','098132845','1234','BV01','ML01','PB102','',''),
+('NV03',N'Hoàng Minh Tuấn','10/10/1997','False','6545454556464',N'Đồng Nai','098132845','1234','QLNS','ML03','PBQL','','');
 GO
 INSERT INTO HoaDon(MaHoaDon,ThoiGian,NgXuatHD,MaSoVe,SoTien)
 VALUES
@@ -188,23 +198,34 @@ VALUES
 ('HD02','9:45:0','NV01','MV02','120000');
 GO
 
-------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------
---Procudure
-
---Truy xuất thông tin đăng nhập cho nhân viên
-use QuanLyBenXe;
+--Lấy thông tin cho quản lý nhân sự xem và chỉnh sửa
+if object_id('select_QuanLyNhanVien') is not null
+ drop proc select_QuanLyNhanVien;
 go
-
-if object_id('DangNhapNhanVien') is not null
-	drop proc DangNhapNhanVien;
-go
-create proc DangNhapNhanVien
+create proc select_QuanLyNhanVien
 as
-select MaNhanVien, MatKhau, MaChucVu
-from NhanVien,ChucVu
-where NhanVien.ChucVu=ChucVu.MaChucVu;
-go
+select MaNhanVien, HoTen,NgaySinh,(case GioiTinh when 'True' then N'Nam' else N'Nữ' end) as GioiTinh, CMT,
+QueQuan,DienThoai,ChucVu,Phong,LanCuoiCapNhat, NguoiCapNhat from NhanVien;
 
-exec DangNhapNhanVien;
 go
+--Thêm thông tin cho nhân viên
+if object_id('add_QuanLyNhanVien') is not null
+	drop proc add_QuanLyNhanVien;
+go
+create proc add_QuanLyNhanVien
+(
+@manhanvien nvarchar(50),
+@hoten nvarchar(50),
+@ngaysinh date,
+@gioitinh bit,
+@cmt nvarchar(50),
+@quequan nvarchar(50),
+@sdt numeric,
+@matkhau varchar(50),
+@chucvu nvarchar(50),
+@tienluong nvarchar(50),
+@phong nvarchar(50),
+@lancuoicapnhat datetime,
+@nguoicapnhat nvarchar(50)
+)
+as insert NhanVien values(@manhanvien,@hoten,@ngaysinh,@gioitinh,@cmt,@quequan,@sdt,@matkhau,@chucvu,@tienluong,@phong,@lancuoicapnhat,@nguoicapnhat);

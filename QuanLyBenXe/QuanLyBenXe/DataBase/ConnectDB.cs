@@ -44,6 +44,18 @@ namespace QuanLyBenXe.DataBase
             close();
             return dt;
         }
+         //Truy vấn lấy 1 trg dữ liệu
+        public DataTable truyvan_onefiels(string tenbang, string tencot, string giatricot)
+        {
+            DataTable dtT = new DataTable();
+            string sql = "select * from " + tenbang + " where " + tencot + " =" + giatricot + ";";
+            open();
+            cmd = new SqlCommand(sql, con);
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dtT);
+            close();
+            return dtT;
+        }
 
         public DataTable select_procedure(string ten_procedure)
         {
@@ -57,6 +69,7 @@ namespace QuanLyBenXe.DataBase
             return dt;
         }
 
+        #region NhanVien
         public SqlCommand add_NhanVien(string MaNV, string HoTen, string NgaySinh, string GioiTinh, string Cmt,string QueQuan,double Sdt, string MatKhau, string ChucVu, string TienLuong, string Phong, DateTime Lancuoicapnhat, string NguoiCapNhat)
         {
             open();
@@ -79,42 +92,67 @@ namespace QuanLyBenXe.DataBase
             close();
             return cmd;
         }
-        public SqlCommand update_hocsinh(string Mahocsinh, string tenhocsinh, string Malop, DateTime ngaysinh, string gioitinh, double sdt)
+        public SqlCommand update_NhanVien(string MaNV, string HoTen, string NgaySinh, string GioiTinh, string Cmt, string QueQuan, double Sdt, string ChucVu, string Phong, DateTime Lancuoicapnhat, string NguoiCapNhat)
         {
             open();
-            cmd = new SqlCommand("update_hocsinh", con);
-            cmd.Parameters.Add(new SqlParameter("@mahocsinh", Mahocsinh));
-            cmd.Parameters.Add(new SqlParameter("@tenhocsinh", tenhocsinh));
-            cmd.Parameters.Add(new SqlParameter("@malop", Malop));
-            cmd.Parameters.Add(new SqlParameter("@ngaysinh", ngaysinh));
-            cmd.Parameters.Add(new SqlParameter("@gioitinh", gioitinh));
-            cmd.Parameters.Add(new SqlParameter("@sdt", sdt));
+            cmd = new SqlCommand("update_QuanLyNhanVien", con);
+            cmd.Parameters.Add(new SqlParameter("@manhanvien", MaNV));
+            cmd.Parameters.Add(new SqlParameter("@hoten", HoTen));
+            cmd.Parameters.Add(new SqlParameter("@ngaysinh", NgaySinh));
+            cmd.Parameters.Add(new SqlParameter("@gioitinh", GioiTinh));
+            cmd.Parameters.Add(new SqlParameter("@cmt", Cmt));
+            cmd.Parameters.Add(new SqlParameter("@quequan", QueQuan));
+            cmd.Parameters.Add(new SqlParameter("@sdt", Sdt));
+            cmd.Parameters.Add(new SqlParameter("@chucvu", ChucVu));
+            cmd.Parameters.Add(new SqlParameter("@phong", Phong));
+            cmd.Parameters.Add(new SqlParameter("@lancuoicapnhat", Lancuoicapnhat));
+            cmd.Parameters.Add(new SqlParameter("@nguoicapnhat", NguoiCapNhat));
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.ExecuteNonQuery();
             close();
             return cmd;
         }
-        public SqlCommand delete_hocsinh(string Mahocsinh)
+        public SqlCommand delete_NhanVien(string MaNhanVien)
         {
             open();
-            cmd = new SqlCommand("delete_hocsinh", con);
-            cmd.Parameters.Add(new SqlParameter("@mahocsinh", Mahocsinh));
+            cmd = new SqlCommand("delete_QuanLyNhanVien", con);
+            cmd.Parameters.Add(new SqlParameter("@manhanvien", MaNhanVien));
+            cmd.CommandType = CommandType.StoredProcedure;
             cmd.ExecuteNonQuery();
             close();
             return cmd;
         }
-        public DataTable search_hocsinh(string chuoitimkiem)
+        public DataTable search_NhanVien(string chuoitimkiem)
         {
             dt = new DataTable();
             open();
-            cmd = new SqlCommand("search_hocsinh", con);
+            cmd = new SqlCommand("search_QuanLyNhanVien", con);
             cmd.Parameters.Add(new SqlParameter("@chuoitimkiem", chuoitimkiem));
             cmd.CommandType = CommandType.StoredProcedure;
-            da = new SqlDataAdapter();
+            da = new SqlDataAdapter(cmd);
             da.Fill(dt);
             close();
             return dt;
         }
+        public DataTable available_NhanVien(string MaNhanVien, string CMT)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand("available_QuanLyNhanVien", con);
+            cmd.Parameters.Add(new SqlParameter("@manhanvien",MaNhanVien));
+            cmd.Parameters.Add(new SqlParameter("@cmt", CMT));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
+        }
+        #endregion
+
+# region QuanLyXe
+        //LẤy thông tin 1 trường chủ xe
+
+#endregion
         public void Load_Combobox(ComboBox tenCombobox, string tentable, string cotten, string cotma)
         {
             dt = new DataTable();

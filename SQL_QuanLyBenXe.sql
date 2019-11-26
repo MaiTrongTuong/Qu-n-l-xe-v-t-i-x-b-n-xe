@@ -178,7 +178,8 @@ INSERT INTO Luong(MaLuong,MucLuong)
 VALUES
 ('ML02','12000000'),
 ('ML01','9000000'),
-('ML03','16000000');
+('ML03','16000000'),
+('ML00','0');
 GO
 INSERT INTO PhongBan(MaPhongBan,TenPhongBan)
 VALUES
@@ -229,3 +230,76 @@ create proc add_QuanLyNhanVien
 @nguoicapnhat nvarchar(50)
 )
 as insert NhanVien values(@manhanvien,@hoten,@ngaysinh,@gioitinh,@cmt,@quequan,@sdt,@matkhau,@chucvu,@tienluong,@phong,@lancuoicapnhat,@nguoicapnhat);
+
+--Sửa thông tin cho nhân viên
+if object_id('update_QuanLyNhanVien') is not null
+	drop proc update_QuanLyNhanVien;
+go
+create proc update_QuanLyNhanVien
+(
+@manhanvien nvarchar(50),
+@hoten nvarchar(50),
+@ngaysinh date,
+@gioitinh bit,
+@cmt nvarchar(50),
+@quequan nvarchar(50),
+@sdt numeric,
+@chucvu nvarchar(50),
+@phong nvarchar(50),
+@lancuoicapnhat datetime,
+@nguoicapnhat nvarchar(50)
+)
+as
+update NhanVien set HoTen=@hoten, NgaySinh=@ngaysinh, GioiTinh=@gioitinh,CMT=@cmt,DienThoai=@sdt,
+	ChucVu=@chucvu,Phong=Phong,LanCuoiCapNhat=@lancuoicapnhat,NguoiCapNhat=@nguoicapnhat where MaNhanVien=@manhanvien;
+go
+if object_id('delete_QuanLyNhanVien') is not null
+	drop proc delete_QuanLyNhanVien;
+go
+create proc delete_QuanLyNhanVien
+( 
+@manhanvien nvarchar(50)
+)
+as delete from NhanVien where MaNhanVien = @manhanvien;
+go
+
+--Tìm kiếm nhân viên
+if object_id('search_QuanLyNhanVien') is not null
+	drop proc search_QuanLyNhanVien;
+go
+create proc search_QuanLyNhanVien
+(
+@chuoitimkiem nvarchar(50)
+)
+as select MaNhanVien, HoTen,NgaySinh,(case GioiTinh when 'True' then N'Nam' else N'Nữ' end) as GioiTinh, CMT,
+QueQuan,DienThoai,ChucVu,Phong,LanCuoiCapNhat, NguoiCapNhat from NhanVien
+where MaNhanVien like N'%' +@chuoitimkiem +'%' 
+or HoTen like N'%' +@chuoitimkiem +'%' 
+or NgaySinh like N'%' +@chuoitimkiem +'%' 
+or CMT like N'%' +@chuoitimkiem +'%' 
+or QueQuan like N'%' + @chuoitimkiem +'%'
+or DienThoai like N'%' +@chuoitimkiem+'%'
+or ChucVu like N'%' + @chuoitimkiem +'%'
+or Phong like N'%' + @chuoitimkiem + '%';
+
+--Kiểm tra trùng lặp chứng minh, mã nhân viên
+if object_id('available_QuanLyNhanVien') is not null
+	drop proc available_QuanLyNhanVien;
+go
+create proc available_QuanLyNhanVien
+( 
+@manhanvien nvarchar(50),
+@cmt nvarchar(50)
+)
+as select * from NhanVien where MaNhanVien=@manhanvien or CMT=@cmt;
+
+--**************************
+--QUẢN LÝ XE VÀ CHỦ XE
+--***************************
+--Lấy data xe
+if object_id('select_QuanLyXe') is not null
+ drop proc select_QuanLyNhanVien;
+go
+create proc select_QuanLyXe
+as
+select * from XE;

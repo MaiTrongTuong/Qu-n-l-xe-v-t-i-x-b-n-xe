@@ -44,19 +44,6 @@ namespace QuanLyBenXe.DataBase
             close();
             return dt;
         }
-         //Truy vấn lấy 1 trg dữ liệu
-        public DataTable truyvan_onefiels(string tenbang, string tencot, string giatricot)
-        {
-            DataTable dtT = new DataTable();
-            string sql = "select * from " + tenbang + " where " + tencot + " =" + giatricot + ";";
-            open();
-            cmd = new SqlCommand(sql, con);
-            da = new SqlDataAdapter(cmd);
-            da.Fill(dtT);
-            close();
-            return dtT;
-        }
-
         public DataTable select_procedure(string ten_procedure)
         {
             dt = new DataTable();
@@ -149,10 +136,137 @@ namespace QuanLyBenXe.DataBase
         }
         #endregion
 
-# region QuanLyXe
-        //LẤy thông tin 1 trường chủ xe
+        #region QuanLyXe
 
-#endregion
+        //Thêm Xe
+        public SqlCommand add_Xe(string MaXe, string BienSo, string HieuXe, string LoaiXe, string ChuXe, string ChatLuong, string TrangThaiHD, string TaiXeChinh)
+        {
+            open();
+            cmd = new SqlCommand("add_Xe", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.Parameters.Add(new SqlParameter("@bienso", BienSo));
+            cmd.Parameters.Add(new SqlParameter("@hieuxe", HieuXe));
+            cmd.Parameters.Add(new SqlParameter("@loaixe", LoaiXe));
+            cmd.Parameters.Add(new SqlParameter("@chuxe", ChuXe));
+            cmd.Parameters.Add(new SqlParameter("@chatluong", ChatLuong));
+            cmd.Parameters.Add(new SqlParameter("@trangthaihoatdong", TrangThaiHD));
+            cmd.Parameters.Add(new SqlParameter("@taixechinh", TaiXeChinh));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+
+        public SqlCommand update_Xe(string MaXe, string BienSo, string HieuXe, string LoaiXe, string ChuXe, string ChatLuong, string TrangThaiHD, string TaiXeChinh)
+        {
+            open();
+            cmd = new SqlCommand("update_Xe", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.Parameters.Add(new SqlParameter("@bienso", BienSo));
+            cmd.Parameters.Add(new SqlParameter("@hieuxe", HieuXe));
+            cmd.Parameters.Add(new SqlParameter("@loaixe", LoaiXe));
+            cmd.Parameters.Add(new SqlParameter("@chuxe", ChuXe));
+            cmd.Parameters.Add(new SqlParameter("@chatluong", ChatLuong));
+            cmd.Parameters.Add(new SqlParameter("@trangthaihoatdong", TrangThaiHD));
+            cmd.Parameters.Add(new SqlParameter("@taixechinh", TaiXeChinh));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        public SqlCommand delete_Xe(string MaXe)
+        {
+            open();
+            cmd = new SqlCommand("delete_Xe", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        public DataTable search_Xe(string chuoitimkiem)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand("search_Xe", con);
+            cmd.Parameters.Add(new SqlParameter("@chuoitimkiem", chuoitimkiem));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
+        }
+
+        public DataTable available_Xe(string MaXe)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand("available_Xe", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe",MaXe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
+        }
+        #endregion
+
+        #region ChuXe
+        public DataTable ThongTin_ChuXe(string machuxe)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand("take_onerows", con);
+            cmd.Parameters.Add(new SqlParameter("@machuxe", machuxe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
+        }
+
+        public SqlCommand add_ChuXe(string MaChuXe, string HoTen, string MatKhau, string CMT, string DiaChi, string SoDienThoai)
+        {
+            open();
+            cmd = new SqlCommand("add_ChuXe", con);
+            cmd.Parameters.Add(new SqlParameter("@machuxe", MaChuXe));
+            cmd.Parameters.Add(new SqlParameter("@hoten", HoTen));
+            cmd.Parameters.Add(new SqlParameter("@matkhau", MatKhau));
+            cmd.Parameters.Add(new SqlParameter("@cmt", CMT));
+            cmd.Parameters.Add(new SqlParameter("@diachi", DiaChi));
+            cmd.Parameters.Add(new SqlParameter("@sodienthoai", SoDienThoai));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+
+        public SqlCommand update_ChuXe(string MaChuXe, string HoTen, string CMT, string DiaChi, string SoDienThoai)
+        {
+            open();
+            cmd = new SqlCommand("update_ChuXe", con);
+            cmd.Parameters.Add(new SqlParameter("@machuxe", MaChuXe));
+            cmd.Parameters.Add(new SqlParameter("@hoten", HoTen));
+            cmd.Parameters.Add(new SqlParameter("@cmt", CMT));
+            cmd.Parameters.Add(new SqlParameter("@diachi", DiaChi));
+            cmd.Parameters.Add(new SqlParameter("@sodienthoai", SoDienThoai));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        public SqlCommand delete_ChuXe(string MaChuXe)
+        {
+            open();
+            cmd = new SqlCommand("delete_ChuXe", con);
+            cmd.Parameters.Add(new SqlParameter("@machuxe", MaChuXe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+
+        #endregion
         public void Load_Combobox(ComboBox tenCombobox, string tentable, string cotten, string cotma)
         {
             dt = new DataTable();

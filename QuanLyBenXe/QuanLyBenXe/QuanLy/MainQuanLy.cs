@@ -91,12 +91,17 @@ namespace QuanLyBenXe.QuanLy
 
         private void BindingDataQLXe_ChuXe(string GiaTriCanBinding)
         {
-            //connection.truyvan_onefiels("ChuXe", "MaChuXe", GiaTriCanBinding);
-            //lblQuanLyXe_MaChuXe.Text = dt[0].ToString();
-            //lblQuanLyXe_HoTen.Text = dt[1].ToString();
-            //lblQuanLyXe_CMT.Text = dt[3].ToString();
-            //lblQuanLyXe_DiaChi.Text = dt[4].ToString();
-            //lblQuanLyXe_SDT.Text = dt[5].ToString();
+            DataTable dt = connection.ThongTin_ChuXe(GiaTriCanBinding);
+            if( dt.Rows.Count>0)
+            {
+                DataRow dr = dt.Rows[0];
+                lblQuanLyXe_MaChuXe.Text = dr["MaChuXe"].ToString();
+                lblQuanLyXe_HoTen.Text = dr["HoTen"].ToString();
+                lblQuanLyXe_DiaChi.Text = dr["DiaChi"].ToString();
+                lblQuanLyXe_CMT.Text = dr["CMT"].ToString();
+                lblQuanLyXe_SDT.Text = dr["SDT"].ToString();
+            }
+ 
         }
 
         private void MainQuanLy_Load(object sender, EventArgs e)
@@ -113,10 +118,14 @@ namespace QuanLyBenXe.QuanLy
             LoadDataQuanLyXe();
 
             BindingDaTaNhanVien();
+
             BindingDataXe();
+
+            BindingDataQLXe_ChuXe(dgvQuanLyXe.Rows[0].Cells["ChuXe"].Value.ToString());
           
 
             pnlInfo.Enabled = false;
+            pnlConfigChuXe.Hide();
 
         }
 
@@ -172,10 +181,6 @@ namespace QuanLyBenXe.QuanLy
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            //Sử lí lương theo chức vụ
-            string Luong = "";
-
-         
             if (CheckHopLe() == 0)
                 return;
 
@@ -252,6 +257,117 @@ namespace QuanLyBenXe.QuanLy
         private void cbbQuanLyXe_ChuXe_SelectedValueChanged(object sender, EventArgs e)
         {
             BindingDataQLXe_ChuXe(cbbQuanLyXe_ChuXe.SelectedValue.ToString());
+        }
+
+        private void dgvQuanLyXe_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //int r = e.RowIndex;
+            //txtQuanLyXe_MaXe.Text = dgvQuanLyXe.Rows[r].Cells[0].Value.ToString();
+            //txtQuanLyXe_BienSo.Text = dgvQuanLyXe.Rows[r].Cells[1].Value.ToString();
+            //txtQuanLyXe_HieuXe.Text = dgvQuanLyXe.Rows[r].Cells[2].Value.ToString();
+            //txtQuanLyXe_LoaiXe.Text = dgvQuanLyXe.Rows[r].Cells[3].Value.ToString();
+            //cbbQuanLyXe_ChuXe.SelectedValue = dgvQuanLyXe.Rows[r].Cells[4].Value;
+            //cbbQuanLyXe_ChatLuong.SelectedValue= dgvQuanLyXe.Rows[r].Cells[5].Value;
+            //txtQuanLyXe_TTHD.Text = dgvQuanLyXe.Rows[r].Cells[6].Value.ToString();
+            //txtQuanLyXe_TaiXeChinh.Text = dgvQuanLyXe.Rows[r].Cells[7].Value.ToString();
+        }
+
+        private void dgvQuanLyXe_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int r = e.RowIndex;
+            if (r < dgvQuanLyXe.Rows.Count || r >= 0)
+            {
+                txtQuanLyXe_MaXe.Text = dgvQuanLyXe.Rows[r].Cells[0].Value.ToString();
+                txtQuanLyXe_BienSo.Text = dgvQuanLyXe.Rows[r].Cells[1].Value.ToString();
+                txtQuanLyXe_HieuXe.Text = dgvQuanLyXe.Rows[r].Cells[2].Value.ToString();
+                txtQuanLyXe_LoaiXe.Text = dgvQuanLyXe.Rows[r].Cells[3].Value.ToString();
+                cbbQuanLyXe_ChuXe.SelectedValue = dgvQuanLyXe.Rows[r].Cells[4].Value;
+                cbbQuanLyXe_ChatLuong.SelectedValue = dgvQuanLyXe.Rows[r].Cells[5].Value;
+                txtQuanLyXe_TTHD.Text = dgvQuanLyXe.Rows[r].Cells[6].Value.ToString();
+                txtQuanLyXe_TaiXeChinh.Text = dgvQuanLyXe.Rows[r].Cells[7].Value.ToString();
+            }
+        }
+
+        private void btnQLX_Luu_Click(object sender, EventArgs e)
+        {
+            connection.add_Xe(txtQuanLyXe_MaXe.Text, txtQuanLyXe_BienSo.Text, txtQuanLyXe_HieuXe.Text,
+                txtQuanLyXe_LoaiXe.Text, cbbQuanLyXe_ChuXe.SelectedValue.ToString(), 
+                cbbQuanLyXe_ChatLuong.SelectedValue.ToString(), txtQuanLyXe_TTHD.Text, txtQuanLyXe_TaiXeChinh.Text);
+
+            LoadDataQuanLyXe();
+        }
+
+        private void btnQLX_Xoa_Click(object sender, EventArgs e)
+        {
+            connection.delete_Xe(txtQuanLyXe_MaXe.Text);
+            LoadDataQuanLyXe();
+        }
+
+        private void btnQLX_Sua_Click(object sender, EventArgs e)
+        {
+            connection.update_Xe(txtQuanLyXe_MaXe.Text, txtQuanLyXe_BienSo.Text, txtQuanLyXe_HieuXe.Text,
+                txtQuanLyXe_LoaiXe.Text, cbbQuanLyXe_ChuXe.SelectedValue.ToString(),
+                cbbQuanLyXe_ChatLuong.SelectedValue.ToString(), txtQuanLyXe_TTHD.Text, txtQuanLyXe_TaiXeChinh.Text);
+
+            LoadDataQuanLyXe();
+        }
+
+        private void txtQLX_TimKiem_TextChanged(object sender, EventArgs e)
+        {
+            dgvQuanLyXe.DataSource = connection.search_Xe(txtQLX_TimKiem.Text);
+            if(txtQLX_TimKiem.Text=="")
+            {
+                LoadDataQuanLyXe();
+            }
+        }        
+
+        private void btnConfigChuXe_Click(object sender, EventArgs e)
+        {
+            pnlConfigChuXe.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            pnlConfigChuXe.Hide();
+        }
+
+        private void pnlConfigChuXe_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnConfigThem_Click(object sender, EventArgs e)
+        {
+            txtQLX_MaChuXe.Clear();
+            txtQLX_HoTen.Clear();
+            txtQLX_DiaChi.Clear();
+            txtQLX_CMT.Clear();
+            txtQLX_SDT.Clear();
+
+        }
+
+        private void btnConfigLuu_Click(object sender, EventArgs e)
+        {
+            connection.add_ChuXe(txtQLX_MaChuXe.Text, txtQLX_HoTen.Text, txtQLX_MaChuXe.Text,txtQLX_CMT.Text, txtQLX_DiaChi.Text,txtQLX_SDT.Text);
+            connection.Load_Combobox(cbbQuanLyXe_ChuXe, "ChuXe", "HoTen", "MaChuXe");
+
+            pnlConfigChuXe.Hide();
+        }
+
+        private void btnConfigXoa_Click(object sender, EventArgs e)
+        {
+            connection.delete_ChuXe(txtQLX_MaChuXe.Text);
+            connection.Load_Combobox(cbbQuanLyXe_ChuXe, "ChuXe", "HoTen", "MaChuXe");
+
+            pnlConfigChuXe.Hide();
+        }
+
+        private void btnConfigSua_Click(object sender, EventArgs e)
+        {
+            connection.update_ChuXe(txtQLX_MaChuXe.Text, txtQLX_HoTen.Text, txtQLX_MaChuXe.Text, txtQLX_DiaChi.Text, txtQLX_SDT.Text);
+            connection.Load_Combobox(cbbQuanLyXe_ChuXe, "ChuXe", "HoTen", "MaChuXe");
+
+            pnlConfigChuXe.Hide();
         }
     }
 }

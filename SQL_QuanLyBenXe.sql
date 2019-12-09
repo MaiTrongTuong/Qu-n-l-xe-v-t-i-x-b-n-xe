@@ -5,7 +5,7 @@ IF DB_ID('QuanlyBenXe') IS NOT NULL
 GO
 CREATE DATABASE QuanLyBenXe
 GO 
-USE QuanLyBenXe
+USE QuanLyBenXe	
 GO
 CREATE TABLE ChuXe
 (
@@ -43,7 +43,6 @@ CREATE TABLE XE
 	ChuXe              nvarchar(50) NOT NULL,
 	ChatLuong          nvarchar(50) NOT NULL,
 	TrangThaiHoatDong   nvarchar(50) NOT NULL,
-	TaiXeChinh           nvarchar(50) NOT NULL,
 	CONSTRAINT PK_MaXe PRIMARY KEY CLUSTERED (
 	 MaXE ASC),
 	Foreign key(ChuXe) references ChuXe(MaChuXe),
@@ -132,10 +131,19 @@ CREATE TABLE HoaDon  --luu tru thong tin ve xe
 	Foreign key(MaSoVe) references Ve(MaVe),
 )
 GO
+CREATE TABLE TaiXe
+(
+	CMT			nvarchar(50) not null,
+	HoVaTen		nvarchar(50) not null,
+	MaXe		nvarchar(50) not null,
+	AnhChanDung     image null,
+	primary key(CMT),
+	Foreign key(MaXe) references XE(MaXe)
+)
 INSERT INTO ChuXe (MaChuXe,HoTen,MatKhau, CMT,DiaChi,SDT)
 VALUES 
-('CX01','Lan','1234',N'72573747',N'15 Nghĩa Hòa-QTB-Tphcm', '0982313231'),
-('CX02','Vỹ','1911',N'132355934',N'228 Cộng Hòa-QTB-Tphcm', '0982313231');
+('CX01',N'Nguyễn Thị Lan','1234',N'72573747',N'15 Nghĩa Hòa-QTB-Tphcm', '0982313231'),
+('CX02',N'Dương Tấn Vỹ','1911',N'132355934',N'228 Cộng Hòa-QTB-Tphcm', '0982313231');
 GO
 INSERT INTO ChatLuong (MaChatLuong,ChatLuong)
 VALUES 
@@ -147,20 +155,15 @@ VALUES
 ('MT01',N'TPHCM',N'Nha Trang','600'),
 ('MT02',N'TPHCM',N'Bình Thuận','219');
 GO
-INSERT INTO Xe(MaXe,BienSo,HieuXe,LoaiXe,ChuXe,ChatLuong,TrangThaiHoatDong,TaiXeChinh)
+INSERT INTO Xe(MaXe,BienSo,HieuXe,LoaiXe,ChuXe,ChatLuong,TrangThaiHoatDong)
 VALUES
-('A15','81723','TOYOTA',40,'CX01','CL01',N'Đang Hoạt Động',N'Bành Trọng Tường'),
-('B13','09612','TOYOTA',20,'CX02','CL02',N'Đang OFF',N'Bành Trọng Mai');
+('A15','81723','TOYOTA',40,'CX01','CL01',N'Xe Mới Thêm'),
+('B13','09612','TOYOTA',20,'CX02','CL02',N'Xe Mới Thêm');
 GO
 INSERT INTO LenhXuatBen(Malxb,MaXe,TrangThai,GioRa,GioVao)
 VALUES
 ('D_A15','A15',N'Được Xuất Bến','11:50:00','18:50:00'),
 ('A_B13','B13',N'Đang Hổng','','');
-GO
-INSERT INTO PhieuDangTai(MaTuyen,MaXe,ThoiGian)
-VALUES
-('MT01','A15','10/09/2019'),
-('MT02','B13','10/07/2019');
 GO
 INSERT INTO Ve(MaVe,Ghe,MaXe,GiaVe)
 VALUES
@@ -198,7 +201,11 @@ VALUES
 ('HD01','8:45:00','NV01','MV01','90000'),
 ('HD02','9:45:0','NV01','MV02','120000');
 GO
-
+INSERT INTO TaiXe(CMT,HoVaTen,MaXe)
+VALUES
+('123456789',N'Nguyễn Văn A','A15'),
+('987654321',N'Trần Tuấn B','B13');
+GO
 --Lấy thông tin cho quản lý nhân sự xem và chỉnh sửa
 if object_id('select_QuanLyNhanVien') is not null
  drop proc select_QuanLyNhanVien;
@@ -326,10 +333,9 @@ create proc add_Xe
 @loaixe nvarchar(50),
 @chuxe nvarchar(50),
 @chatluong nvarchar(50),
-@trangthaihoatdong nvarchar(50),
-@taixechinh nvarchar(50)
+@trangthaihoatdong nvarchar(50)
 )
-as insert into XE values(@maxe,@bienso,@hieuxe,@loaixe,@chuxe,@chatluong,@trangthaihoatdong,@taixechinh);
+as insert into XE values(@maxe,@bienso,@hieuxe,@loaixe,@chuxe,@chatluong,@trangthaihoatdong);
 go
 --Sửa thông tin xe
 if object_id('update_Xe') is not null
@@ -346,7 +352,7 @@ create proc update_Xe
 @trangthaihoatdong nvarchar(50),
 @taixechinh nvarchar(50)
 )
-as update XE set BienSo=@bienso, HieuXe=@hieuxe, LoaiXe=@loaixe,ChuXe=@chuxe,ChatLuong=@chatluong,TrangThaiHoatDong=@trangthaihoatdong,TaiXeChinh=@taixechinh 
+as update XE set BienSo=@bienso, HieuXe=@hieuxe, LoaiXe=@loaixe,ChuXe=@chuxe,ChatLuong=@chatluong,TrangThaiHoatDong=@trangthaihoatdong
 where MaXe=@maxe;
 --Xóa thông tin xe
 if object_id('delete_Xe') is not null
@@ -366,15 +372,14 @@ create proc search_Xe
 (
 @chuoitimkiem nvarchar(50)
 )
-as select  MaXe, BienSo, HieuXe, LoaiXe, ChuXe, ChatLuong, TrangThaiHoatDong, TaiXeChinh  from Xe
+as select  MaXe, BienSo, HieuXe, LoaiXe, ChuXe, ChatLuong, TrangThaiHoatDong  from Xe
 where MaXe like N'%' +@chuoitimkiem +'%' 
 or BienSo like N'%' +@chuoitimkiem +'%' 
 or HieuXe like N'%' +@chuoitimkiem +'%' 
 or LoaiXe like N'%' +@chuoitimkiem +'%' 
 or ChuXe like N'%' + @chuoitimkiem +'%'
 or ChatLuong like N'%' +@chuoitimkiem+'%'
-or TrangThaiHoatDong like N'%' + @chuoitimkiem +'%'
-or TaiXeChinh like N'%' + @chuoitimkiem + '%';
+or TrangThaiHoatDong like N'%' + @chuoitimkiem +'%';
 
 if object_id('available_Xe') is not null
 	drop proc available_Xe;
@@ -387,7 +392,7 @@ as select * from XE where MaXe=@maxe;
 go
 
 --***********************
---CHỦ XE
+--Quản lí chủ xe
 --***********************
 if object_id('add_ChuXe') is not null
 	drop proc add_ChuXe;
@@ -436,3 +441,123 @@ create proc available_ChuXe
 )
 as select * from ChuXe where MaChuXe=@machuxe;
 go
+if object_id('search_ChuXe') is not null
+	drop proc search_ChuXe;
+go
+create proc search_ChuXe
+(
+@chuoitimkiem nvarchar(50)
+)
+as select MaChuXe,HoTen,CMT,SDT,DiaChi  from ChuXe
+where MaChuXe like N'%' +@chuoitimkiem +'%' 
+or HoTen like N'%' +@chuoitimkiem +'%' 
+or CMT like N'%' +@chuoitimkiem +'%' 
+or SDT like N'%' +@chuoitimkiem +'%' 
+or DiaChi like N'%' + @chuoitimkiem +'%';
+go
+
+
+--***********************
+--Chủ xe tài xế
+--***********************
+if object_id ('select_TaiXe') is not null
+	drop view select_TaiXe;
+go 
+create view select_TaiXe
+as 
+select CMT,HoVaTen,MaXe from TaiXe;
+go
+
+if object_id('select_AllTaiXe') is not null
+ drop proc select_AllTaiXe;
+go
+create proc select_AllTaiXe
+as
+select * from TaiXe;
+go
+
+
+if object_id('update_TaiXe') is not null
+	drop proc update_TaiXe;
+go
+create proc update_TaiXe
+(
+@cmt nvarchar(50),
+@hovaten nvarchar(50),
+@maxe nvarchar(50),
+@anhchandung image
+)
+as update TaiXe set HoVaTen=@hovaten,MaXe= @maxe,AnhChanDung=@anhchandung where CMT=@cmt;
+go
+
+--View cho tuyến đường
+if object_id('select_TuyenDuong') is not null
+	drop view select_TuyenDuong;
+go
+create view select_TuyenDuong
+as
+select * from TuyenDuong;
+go
+
+-- Lấy Xe theo quyền sở hữu xe
+if OBJECT_ID('select_XeChuaLenTuyen') is not null
+	drop proc select_XeChuaLenTuyen;
+go
+create proc select_XeChuaLenTuyen
+(
+@machuxe nvarchar(50)
+)
+as
+begin
+select * from XE
+ where not exists 
+	(select * from PhieuDangTai,XE
+		where PhieuDangTai.MaXe=XE.MaXe)
+		and XE.ChuXe=@machuxe;
+end
+
+--LLấy dữ liệu cho phiếu đăng tải
+if object_id('select_PhieuDangTai') is not null
+	drop view select_PhieuDangTai;
+go
+create view select_PhieuDangTai
+as
+select * from PhieuDangTai;
+go
+--insert dữ liệu vào bảng đăng tải
+if object_id('add_PhieuDangTai') is not null
+	drop proc add_PhieuDangTai;
+go
+create proc add_PhieuDangTai
+(
+@matuyen nvarchar(50),
+@maxe nvarchar(50),
+@thoigian datetime
+)
+as
+begin try
+	begin tran
+	insert PhieuDangTai values (@matuyen,@maxe,@thoigian);
+	commit tran;
+end try
+begin catch
+	rollback tran;
+end catch;
+
+--Huy Phieu Dang Tai
+if object_id('delete_PhieuDangTai') is not null
+	drop proc delete_PhieuDangTai;
+go
+create proc delete_PhieuDangTai
+(
+@maxe nvarchar(50)
+)
+as
+begin try
+	begin tran
+	delete PhieuDangTai where MaXe=@maxe;
+	commit tran
+end try
+begin catch
+	rollback tran
+end catch

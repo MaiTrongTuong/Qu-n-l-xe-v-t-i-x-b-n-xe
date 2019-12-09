@@ -86,7 +86,6 @@ namespace QuanLyBenXe.QuanLy
             cbbQuanLyXe_ChuXe.SelectedValue= dgvQuanLyXe.Rows[0].Cells[4].Value;
             cbbQuanLyXe_ChatLuong.SelectedValue = dgvQuanLyXe.Rows[0].Cells[5].Value;
             txtQuanLyXe_TTHD.Text= dgvQuanLyXe.Rows[0].Cells[6].Value.ToString();
-            txtQuanLyXe_TaiXeChinh.Text = dgvQuanLyXe.Rows[0].Cells[7].Value.ToString();
         }
 
         private void BindingDataQLXe_ChuXe(string GiaTriCanBinding)
@@ -284,7 +283,6 @@ namespace QuanLyBenXe.QuanLy
                 cbbQuanLyXe_ChuXe.SelectedValue = dgvQuanLyXe.Rows[r].Cells[4].Value;
                 cbbQuanLyXe_ChatLuong.SelectedValue = dgvQuanLyXe.Rows[r].Cells[5].Value;
                 txtQuanLyXe_TTHD.Text = dgvQuanLyXe.Rows[r].Cells[6].Value.ToString();
-                txtQuanLyXe_TaiXeChinh.Text = dgvQuanLyXe.Rows[r].Cells[7].Value.ToString();
             }
         }
 
@@ -292,7 +290,7 @@ namespace QuanLyBenXe.QuanLy
         {
             connection.add_Xe(txtQuanLyXe_MaXe.Text, txtQuanLyXe_BienSo.Text, txtQuanLyXe_HieuXe.Text,
                 txtQuanLyXe_LoaiXe.Text, cbbQuanLyXe_ChuXe.SelectedValue.ToString(), 
-                cbbQuanLyXe_ChatLuong.SelectedValue.ToString(), txtQuanLyXe_TTHD.Text, txtQuanLyXe_TaiXeChinh.Text);
+                cbbQuanLyXe_ChatLuong.SelectedValue.ToString(), txtQuanLyXe_TTHD.Text);
 
             LoadDataQuanLyXe();
         }
@@ -307,7 +305,7 @@ namespace QuanLyBenXe.QuanLy
         {
             connection.update_Xe(txtQuanLyXe_MaXe.Text, txtQuanLyXe_BienSo.Text, txtQuanLyXe_HieuXe.Text,
                 txtQuanLyXe_LoaiXe.Text, cbbQuanLyXe_ChuXe.SelectedValue.ToString(),
-                cbbQuanLyXe_ChatLuong.SelectedValue.ToString(), txtQuanLyXe_TTHD.Text, txtQuanLyXe_TaiXeChinh.Text);
+                cbbQuanLyXe_ChatLuong.SelectedValue.ToString(), txtQuanLyXe_TTHD.Text);
 
             LoadDataQuanLyXe();
         }
@@ -349,7 +347,14 @@ namespace QuanLyBenXe.QuanLy
         private void btnConfigLuu_Click(object sender, EventArgs e)
         {
             connection.add_ChuXe(txtQLX_MaChuXe.Text, txtQLX_HoTen.Text, txtQLX_MaChuXe.Text,txtQLX_CMT.Text, txtQLX_DiaChi.Text,txtQLX_SDT.Text);
+
             connection.Load_Combobox(cbbQuanLyXe_ChuXe, "ChuXe", "HoTen", "MaChuXe");
+
+            txtQLX_MaChuXe.Clear();
+            txtQLX_HoTen.Clear();
+            txtQLX_DiaChi.Clear();
+            txtQLX_CMT.Clear();
+            txtQLX_SDT.Clear();
 
             pnlConfigChuXe.Hide();
         }
@@ -369,5 +374,48 @@ namespace QuanLyBenXe.QuanLy
 
             pnlConfigChuXe.Hide();
         }
+
+        //private void QLCX_TimKiem_TextChanged(object sender, EventArgs e)
+        //{
+        //    dgvQLCX.DataSource = connection.search(QLCX_TimKiem.Text, "search_ChuXe");
+
+        //}
+
+        //private void dgvQLCX_CellClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    int r = e.RowIndex;
+        //    if (r < dgvQuanLyXe.Rows.Count || r >= 0)
+        //    {
+        //        QLCX_MaChuXe.Text = dgvQLCX.Rows[r].Cells[0].Value.ToString();
+        //        QLCX_HovaTen.Text = dgvQLCX.Rows[r].Cells[1].Value.ToString();
+        //        QLCX_CMT.Text = dgvQLCX.Rows[r].Cells[2].Value.ToString();
+        //        QLCX_SoDienThoai.Text = dgvQLCX.Rows[r].Cells[3].Value.ToString();
+        //        QLCX_DiaChi.Text = dgvQLCX.Rows[r].Cells[4].Value.ToString();
+        //    }
+
+        //    btnQLCX_ThemMoi.Enabled = false;
+        //    QLCX_MaChuXe.Enabled = false;
+        //}
+
+        //private void btnQLCX_Clear_Click(object sender, EventArgs e)
+        //{
+        //    QLCX_MaChuXe.Clear();
+        //    QLCX_HovaTen.Clear();
+        //    QLCX_CMT.Clear();
+        //    QLCX_SoDienThoai.Clear();
+        //    QLCX_DiaChi.Clear();
+
+        //    QLCX_MaChuXe.Enabled = true;
+        //}
+
+        //private void btnQLCX_ThemMoi_Click(object sender, EventArgs e)
+        //{
+        //    connection.add_ChuXe(QLCX_MaChuXe.Text, QLCX_HovaTen.Text, QLCX_MaChuXe.Text, QLCX_CMT.Text, QLCX_DiaChi.Text, QLCX_SoDienThoai.Text);
+        //}
+
+        //private void btnQLCX_Sua_Click(object sender, EventArgs e)
+        //{
+        //    connection.update_ChuXe(QLCX_MaChuXe.Text, QLCX_HovaTen.Text, QLCX_CMT.Text, QLCX_DiaChi.Text, QLCX_SoDienThoai.Text);
+        //}
     }
 }

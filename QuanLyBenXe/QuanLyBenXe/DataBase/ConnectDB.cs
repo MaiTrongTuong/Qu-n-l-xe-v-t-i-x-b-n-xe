@@ -139,7 +139,7 @@ namespace QuanLyBenXe.DataBase
         #region QuanLyXe
 
         //Thêm Xe
-        public SqlCommand add_Xe(string MaXe, string BienSo, string HieuXe, string LoaiXe, string ChuXe, string ChatLuong, string TrangThaiHD, string TaiXeChinh)
+        public SqlCommand add_Xe(string MaXe, string BienSo, string HieuXe, string LoaiXe, string ChuXe, string ChatLuong, string TrangThaiHD)
         {
             open();
             cmd = new SqlCommand("add_Xe", con);
@@ -150,14 +150,13 @@ namespace QuanLyBenXe.DataBase
             cmd.Parameters.Add(new SqlParameter("@chuxe", ChuXe));
             cmd.Parameters.Add(new SqlParameter("@chatluong", ChatLuong));
             cmd.Parameters.Add(new SqlParameter("@trangthaihoatdong", TrangThaiHD));
-            cmd.Parameters.Add(new SqlParameter("@taixechinh", TaiXeChinh));
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.ExecuteNonQuery();
             close();
             return cmd;
         }
 
-        public SqlCommand update_Xe(string MaXe, string BienSo, string HieuXe, string LoaiXe, string ChuXe, string ChatLuong, string TrangThaiHD, string TaiXeChinh)
+        public SqlCommand update_Xe(string MaXe, string BienSo, string HieuXe, string LoaiXe, string ChuXe, string ChatLuong, string TrangThaiHD)
         {
             open();
             cmd = new SqlCommand("update_Xe", con);
@@ -168,7 +167,6 @@ namespace QuanLyBenXe.DataBase
             cmd.Parameters.Add(new SqlParameter("@chuxe", ChuXe));
             cmd.Parameters.Add(new SqlParameter("@chatluong", ChatLuong));
             cmd.Parameters.Add(new SqlParameter("@trangthaihoatdong", TrangThaiHD));
-            cmd.Parameters.Add(new SqlParameter("@taixechinh", TaiXeChinh));
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.ExecuteNonQuery();
             close();
@@ -211,7 +209,7 @@ namespace QuanLyBenXe.DataBase
         }
         #endregion
 
-        #region ChuXe
+        #region QuanLyChuXe
         public DataTable ThongTin_ChuXe(string machuxe)
         {
             dt = new DataTable();
@@ -265,8 +263,35 @@ namespace QuanLyBenXe.DataBase
             close();
             return cmd;
         }
-
         #endregion
+        #region TaiXe
+        public SqlCommand update_TaiXe(string CMT, string HovaTen, string MaXe,byte[] AnhChanDung)
+        {
+            open();
+            cmd = new SqlCommand("update_TaiXe", con);
+            cmd.Parameters.Add(new SqlParameter("cmt",CMT));
+            cmd.Parameters.Add(new SqlParameter("@hovaten", HovaTen));
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.Parameters.Add(new SqlParameter("@anhchandung", AnhChanDung));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        #endregion
+        #region GeneralMethod
+        public DataTable search(string chuoitimkiem, string ProcedureName)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand(ProcedureName, con);
+            cmd.Parameters.Add(new SqlParameter("@chuoitimkiem", chuoitimkiem));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
+        }
         public void Load_Combobox(ComboBox tenCombobox, string tentable, string cotten, string cotma)
         {
             dt = new DataTable();
@@ -275,5 +300,53 @@ namespace QuanLyBenXe.DataBase
             tenCombobox.DisplayMember = cotten;
             tenCombobox.ValueMember = cotma;
         }
+        public void Load_Combobox(ComboBox tenCombobox, string tentable, string cotten, string cotma,string DieuKien, string NoiDung)
+        {
+            dt = new DataTable();
+            dt = truyvan("select * from " + tentable+" where " + DieuKien +" = '"+NoiDung+"';");
+            tenCombobox.DataSource = dt;
+            tenCombobox.DisplayMember = cotten;
+            tenCombobox.ValueMember = cotma;
+        }
+        #endregion
+
+        #region QuyenChuXe
+        public DataTable selectfl_ChuXe(string MaChuXe, string ProcedureName)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand(ProcedureName, con);
+            cmd.Parameters.Add(new SqlParameter("@machuxe",MaChuXe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
+        }
+
+        //Them Tuyen
+        public SqlCommand add_PhieuDangTai(string MaTuyen, string MaXe, DateTime ThoiGian)
+        {
+            open();
+            cmd = new SqlCommand("add_PhieuDangTai", con);
+            cmd.Parameters.Add(new SqlParameter("@matuyen", MaTuyen));
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.Parameters.Add(new SqlParameter("@thoigian", ThoiGian));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        public SqlCommand delete_PhieuDangTai(string MaXe)
+        {
+            open();
+            cmd = new SqlCommand("delete_PhieuDangTai", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        #endregion
     }
 }

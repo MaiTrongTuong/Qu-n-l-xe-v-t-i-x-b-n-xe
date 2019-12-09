@@ -12,7 +12,7 @@ namespace QuanLyBenXe.DataBase
 {
     class ConnectDB
     {
-        private string connectionString = @"Data Source=DESKTOP-116K21P; Initial Catalog= QuanLyBenXe; Integrated Security=True;";
+        private string connectionString = @"Data Source=DESKTOP-TM29P3C\SQLEXPRESS; Initial Catalog= QuanLyBenXe; Integrated Security=True;";
         SqlConnection con;
         DataTable dt;
         SqlDataAdapter da;

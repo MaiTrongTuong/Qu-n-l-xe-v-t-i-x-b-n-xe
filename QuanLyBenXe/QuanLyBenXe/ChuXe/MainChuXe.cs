@@ -18,7 +18,6 @@ namespace QuanLyBenXe.ChuXe
     public partial class MainChuXe : Form
     {
         ConnectDB connection = new ConnectDB();
-        DataTable dt = new DataTable();
 
         private byte[] byteconvert;
 
@@ -31,9 +30,7 @@ namespace QuanLyBenXe.ChuXe
 
         public void LoadTaiXe()
         {
-            dgvTaiXe.DataSource = connection.truyvan("select * from select_TaiXe");
-
-            dt = connection.select_procedure("select_AllTaiXe");
+            dgvTaiXe.DataSource = connection.selectfl_ChuXe(frmDangNhap.DR["MaChuXe"].ToString(), "select_TaiXe");
         }
         public void LoadDangTai()
         {
@@ -42,6 +39,13 @@ namespace QuanLyBenXe.ChuXe
             dgvDangTai.DataSource = connection.truyvan("select * from select_PhieuDangTai");
 
             dgv_LenhXe.DataSource = connection.selectfl_ChuXe(frmDangNhap.DR["MaChuXe"].ToString(), "select_XeChuaLenTuyen");
+        }
+
+        public void LoadCapLenh()
+        {
+            dgvXeChuaCapLenhXuat.DataSource = connection.selectfl_ChuXe(frmDangNhap.DR["MaChuXe"].ToString(), "select_XeChuaCapLenh");
+
+            dgvXeDaDuocCapLenh.DataSource = connection.truyvan("select * from LenhXuatBen");
         }
 
         private void MainChuXe_Load(object sender, EventArgs e)
@@ -53,6 +57,8 @@ namespace QuanLyBenXe.ChuXe
             LoadTaiXe();
 
             LoadDangTai();
+
+            LoadCapLenh();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -86,23 +92,23 @@ namespace QuanLyBenXe.ChuXe
                 FilePath = openFile.FileName;
             }
         }
-        private byte[] converImgToByte(string filePath)
-        {
-            FileStream fs;
-            fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            byte[] picbyte = new byte[fs.Length];
-            fs.Read(picbyte, 0, System.Convert.ToInt32(fs.Length));
-            fs.Close();
-            return picbyte;
-        }
-        private Image ByteToImg(string byteString)
-        {
-            byte[] imgBytes = Convert.FromBase64String(byteString);
-            MemoryStream ms = new MemoryStream(imgBytes, 0, imgBytes.Length);
-            ms.Write(imgBytes, 0, imgBytes.Length);
-            Image image = Image.FromStream(ms, true);
-            return image;
-        }
+        //private byte[] converImgToByte(string filePath)
+        //{
+        //    FileStream fs;
+        //    fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        //    byte[] picbyte = new byte[fs.Length];
+        //    fs.Read(picbyte, 0, System.Convert.ToInt32(fs.Length));
+        //    fs.Close();
+        //    return picbyte;
+        //}
+        //private Image ByteToImg(string byteString)
+        //{
+        //    byte[] imgBytes = Convert.FromBase64String(byteString);
+        //    MemoryStream ms = new MemoryStream(imgBytes, 0, imgBytes.Length);
+        //    ms.Write(imgBytes, 0, imgBytes.Length);
+        //    Image image = Image.FromStream(ms, true);
+        //    return image;
+        //}
 
         private void btnTaiXe_Sua_Click(object sender, EventArgs e)
         {
@@ -124,20 +130,23 @@ namespace QuanLyBenXe.ChuXe
             TaiXe_CMT.Text = dgvTaiXe.Rows[r].Cells[0].Value.ToString();
             TaiXe_HovaTen.Text = dgvTaiXe.Rows[r].Cells[1].Value.ToString();
             cbbXe.SelectedValue = dgvTaiXe.Rows[r].Cells[2].Value;
-
-            byteconvert = (byte[])(dt.Rows[r]["AnhChanDung"]);
-                if (byteconvert != null)
+                try
                 {
-                    MemoryStream anh1 = new MemoryStream(byteconvert.ToArray());
+                    byteconvert = (byte[])(dgvTaiXe.Rows[r].Cells["AnhChanDung"].Value);
+                }
+                catch
+                {
+                    return;
+                }
+                MemoryStream anh1 = new MemoryStream(byteconvert.ToArray());
 
-                    if (anh1 != null)
-                    {
-                        Image img1 = Image.FromStream(anh1);
-                        picAnhDaiDien.Image = img1;
+                if (anh1 != null)
+                {
+                    Image img1 = Image.FromStream(anh1);
+                    picAnhDaiDien.Image = img1;
 
-                        btnAdd1.Hide();
-                        btnDel1.Show();
-                    }
+                    btnAdd1.Hide();
+                    btnDel1.Show();
                 }
             }
         }
@@ -212,8 +221,59 @@ namespace QuanLyBenXe.ChuXe
             }
             catch (SqlException)
             {
-                MessageBox.Show("Loi them");
+                MessageBox.Show("Loi huy");
             }
+        }
+
+        private void btnCapPhatLenh_Click(object sender, EventArgs e)
+        {
+            if(txtMaCapLenh.Text != null)
+            {
+                DateTime date = DateTime.Now;
+                connection.CapLenhXuatBen(txtMaCapLenh.Text, DateTime.Now.ToString());
+
+                LoadCapLenh();
+            }
+            else
+            {
+                MessageBox.Show("Chua xac dinh xe duoc cap phat");
+            }
+        }
+
+        private void dgvXeChuaCapLenhXuat_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int r = e.RowIndex;
+            txtMaCapLenh.Text = dgvXeChuaCapLenhXuat.Rows[r].Cells[0].Value.ToString();
+        }
+
+        private void btnThuHoiLenh_Click(object sender, EventArgs e)
+        {
+            if (txtMaThuHoi.Text != null)
+            {
+                DateTime date = DateTime.Now;
+                connection.ThuHoiCapLenh(txtMaThuHoi.Text);
+
+                LoadCapLenh();
+            }
+            else
+            {
+                MessageBox.Show("Chua xac dinh xe duoc thu hoi");
+            }
+        }
+
+        private void dgvXeDaDuocCapLenh_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int r = e.RowIndex;
+            if (r >= 0 &&  r < dgvXeDaDuocCapLenh.Rows.Count)
+            {
+                txtMaThuHoi.Text = dgvXeDaDuocCapLenh.Rows[r].Cells[1].Value.ToString();
+            }
+            
+        }
+
+        private void btnTaiXe_Them_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

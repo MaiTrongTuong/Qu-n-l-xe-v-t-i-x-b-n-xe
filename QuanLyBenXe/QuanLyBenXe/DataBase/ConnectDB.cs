@@ -323,8 +323,6 @@ namespace QuanLyBenXe.DataBase
             close();
             return dt;
         }
-
-        //Them Tuyen
         public SqlCommand add_PhieuDangTai(string MaTuyen, string MaXe, DateTime ThoiGian)
         {
             open();
@@ -346,6 +344,30 @@ namespace QuanLyBenXe.DataBase
             cmd.ExecuteNonQuery();
             close();
             return cmd;
+        }
+        public SqlCommand CapLenhXuatBen(string MaXe, string GioRa)
+        {
+            open();
+            cmd = new SqlCommand("CapLenhXuatBen", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.Parameters.Add(new SqlParameter("@giora", GioRa));
+            cmd.Parameters.Add(new SqlParameter("@trangthai", "Được phép xuất bến"));
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.ExecuteNonQuery();
+            close();
+            return cmd;
+        }
+        public DataTable ThuHoiCapLenh(string MaXe)
+        {
+            dt = new DataTable();
+            open();
+            cmd = new SqlCommand("HuyLenhXuatBen", con);
+            cmd.Parameters.Add(new SqlParameter("@maxe", MaXe));
+            cmd.CommandType = CommandType.StoredProcedure;
+            da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            close();
+            return dt;
         }
         #endregion
     }

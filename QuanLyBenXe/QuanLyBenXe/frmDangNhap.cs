@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLyBenXe.DataBase;
 using QuanLyBenXe.QuanLy;
-using QuanLyBenXe.ThuNgan;
 using QuanLyBenXe.BaoVe;
 using QuanLyBenXe.ChuXe;
 
@@ -56,13 +55,6 @@ namespace QuanLyBenXe
                         MainQuanLy quanly = new MainQuanLy();
                         this.Hide();
                         quanly.ShowDialog();
-                        this.Close();
-                    }
-                    else if (DR["ChucVu"].ToString().Substring(0, 2) == "TN")
-                    {
-                        MainThuNgan thungan = new MainThuNgan();
-                        this.Hide();
-                        thungan.ShowDialog();
                         this.Close();
                     }
                     else if (DR["ChucVu"].ToString().Substring(0, 2) == "BV")
